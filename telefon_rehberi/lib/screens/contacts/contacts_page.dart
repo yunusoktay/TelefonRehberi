@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../screens/add_contact/add_contact_page.dart';
 import 'contacts_view_model.dart';
 
 class ContactsPage extends StatelessWidget {
@@ -37,7 +38,24 @@ class ContactsPage extends StatelessWidget {
                       fixedSize: const Size(32, 32),
                       padding: EdgeInsets.zero,
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => Container(
+                          height: MediaQuery.of(context).size.height * 0.9,
+                          decoration: const BoxDecoration(
+                            color: Color(0xFFF9F9F9),
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20),
+                              topRight: Radius.circular(20),
+                            ),
+                          ),
+                          child: const AddContactPage(),
+                        ),
+                      );
+                    },
                     icon: const Icon(Icons.add, size: 28),
                   ),
                 ],
@@ -142,7 +160,24 @@ class ContactsPage extends StatelessWidget {
                           const SizedBox(height: 12),
 
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              showModalBottomSheet(
+                                context: context,
+                                isScrollControlled: true,
+                                backgroundColor: Colors.transparent,
+                                builder: (context) => Container(
+                                  height: MediaQuery.of(context).size.height * 0.9,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xFFF9F9F9),
+                                    borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                  child: const AddContactPage(),
+                                ),
+                              );
+                            },
                             style: TextButton.styleFrom(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
