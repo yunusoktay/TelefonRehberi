@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:lottie/lottie.dart';
 import 'add_contact_view_model.dart';
 import '../contacts/contacts_view_model.dart';
 import '../../model/contact.dart';
@@ -50,6 +51,8 @@ class AddContactPage extends StatelessWidget {
                           GestureDetector(
                             onTap: viewModel.canSave
                                 ? () {
+                                    final navigator = Navigator.of(context);
+
                                     final contactsViewModel =
                                         Provider.of<ContactsViewModel>(
                                           context,
@@ -65,7 +68,89 @@ class AddContactPage extends StatelessWidget {
                                     );
 
                                     contactsViewModel.addContact(newContact);
-                                    Navigator.pop(context);
+
+                                    navigator.pushReplacement(
+                                      PageRouteBuilder(
+                                        pageBuilder:
+                                            (
+                                              context,
+                                              animation,
+                                              secondaryAnimation,
+                                            ) => Scaffold(
+                                              backgroundColor: Colors.white,
+                                              body: SizedBox(
+                                                width: double.infinity,
+                                                height: double.infinity,
+                                                child: Column(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.center,
+                                                  children: [
+                                                    Lottie.asset(
+                                                      'assets/animations/Done.json',
+                                                      width: 150,
+                                                      height: 150,
+                                                      fit: BoxFit.fill,
+                                                      repeat: false,
+                                                      delegates: LottieDelegates(
+                                                        values: [
+                                                          ValueDelegate.color(
+                                                            const [
+                                                              '**',
+                                                              'Fill 1',
+                                                              '**',
+                                                            ],
+                                                            value: const Color(
+                                                              0xFF12B76A,
+                                                            ),
+                                                          ),
+
+                                                          ValueDelegate.color(
+                                                            const [
+                                                              '**',
+                                                              'Stroke 1',
+                                                              '**',
+                                                            ],
+                                                            value: Colors.white,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 8),
+                                                    const Text(
+                                                      'All Done!',
+                                                      style: TextStyle(
+                                                        fontSize: 24,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 8),
+                                                    const Text(
+                                                      'New contact saved 🎉',
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                        transitionDuration: Duration.zero,
+                                        reverseTransitionDuration:
+                                            Duration.zero,
+                                      ),
+                                    );
+
+                                    Future.delayed(
+                                      const Duration(seconds: 3),
+                                      () {
+                                        navigator.pop();
+                                      },
+                                    );
                                   }
                                 : null,
                             child: Text(
@@ -177,10 +262,7 @@ class AddContactPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        border: Border.all(
-          color: Colors.grey.shade400,
-          width: 0.8,
-        ),
+        border: Border.all(color: Colors.grey.shade400, width: 0.8),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.02),
