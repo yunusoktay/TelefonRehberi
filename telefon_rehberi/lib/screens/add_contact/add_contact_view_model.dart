@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import '../../model/contact.dart';
+import '../contacts/contacts_view_model.dart';
 
 class AddContactViewModel extends ChangeNotifier {
   String _firstName = '';
@@ -36,5 +38,19 @@ class AddContactViewModel extends ChangeNotifier {
       _imagePath = image.path;
       notifyListeners();
     }
+  }
+
+  void saveContact(ContactsViewModel contactsViewModel) {
+    if (!canSave) return;
+
+    final newContact = Contact(
+      id: DateTime.now().toString(),
+      firstName: _firstName,
+      lastName: _lastName,
+      phoneNumber: _phoneNumber,
+      imagePath: _imagePath,
+    );
+
+    contactsViewModel.addContact(newContact);
   }
 }
