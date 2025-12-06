@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'screens/contacts/contacts_page.dart';
 import 'screens/contacts/contacts_view_model.dart';
 
@@ -22,6 +23,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xFFF9F9F9),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
+          textTheme: GoogleFonts.mulishTextTheme(),
         ),
         home: const ContactsPage(),
       ),
