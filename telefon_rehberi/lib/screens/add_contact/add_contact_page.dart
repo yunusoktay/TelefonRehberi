@@ -6,6 +6,7 @@ import 'widgets/photo_selector.dart';
 import 'widgets/add_contact_header.dart';
 import 'widgets/add_contact_form.dart';
 import 'widgets/success_animation_screen.dart';
+import 'widgets/photo_selection_sheet.dart';
 
 class AddContactPage extends StatelessWidget {
   const AddContactPage({super.key});
@@ -24,9 +25,8 @@ class AddContactPage extends StatelessWidget {
 
       navigator.pushReplacement(
         PageRouteBuilder(
-          pageBuilder:
-              (context, animation, secondaryAnimation) =>
-                  const SuccessAnimationScreen(),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const SuccessAnimationScreen(),
           transitionDuration: Duration.zero,
           reverseTransitionDuration: Duration.zero,
         ),
@@ -63,7 +63,17 @@ class AddContactPage extends StatelessWidget {
                             const SizedBox(height: 36),
                             PhotoSelector(
                               imagePath: viewModel.imagePath,
-                              onTap: viewModel.pickImage,
+                              onTap: () {
+                                showModalBottomSheet(
+                                  context: context,
+                                  backgroundColor: Colors.transparent,
+                                  builder: (context) => PhotoSelectionSheet(
+                                    onImageSourceSelected: (source) {
+                                      viewModel.pickImage(source);
+                                    },
+                                  ),
+                                );
+                              },
                             ),
                             const SizedBox(height: 32),
                             AddContactForm(

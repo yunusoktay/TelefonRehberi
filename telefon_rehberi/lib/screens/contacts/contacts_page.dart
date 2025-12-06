@@ -4,6 +4,7 @@ import 'contacts_view_model.dart';
 import 'widgets/contacts_header.dart';
 import 'widgets/contact_search_bar.dart';
 import 'widgets/contacts_empty_state.dart';
+import 'widgets/contact_card.dart';
 
 class ContactsPage extends StatelessWidget {
   const ContactsPage({super.key});
@@ -21,17 +22,25 @@ class ContactsPage extends StatelessWidget {
               const SizedBox(height: 10),
               const ContactsHeader(),
               const SizedBox(height: 20),
-              ContactSearchBar(onChanged: (value) {}),
+              ContactSearchBar(
+                onChanged: (value) {
+                  // TODO: Connect to ViewModel search
+                },
+              ),
               Expanded(
                 child: Consumer<ContactsViewModel>(
                   builder: (context, viewModel, child) {
                     if (viewModel.contacts.isNotEmpty) {
                       return ListView.builder(
-                        padding: const EdgeInsets.only(top: 20),
+                        padding: const EdgeInsets.only(top: 10),
                         itemCount: viewModel.contacts.length,
                         itemBuilder: (context, index) {
-                          return ListTile(
-                            title: Text(viewModel.contacts[index].name),
+                          final contact = viewModel.contacts[index];
+                          return ContactCard(
+                            contact: contact,
+                            onTap: () {
+                              // TODO: Navigate to details
+                            },
                           );
                         },
                       );
