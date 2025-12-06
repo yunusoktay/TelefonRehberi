@@ -13,7 +13,7 @@ class AddContactPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _handleSave(BuildContext context, AddContactViewModel viewModel) {
+    void handleSave(BuildContext context, AddContactViewModel viewModel) {
       final navigator = Navigator.of(context);
 
       final contactsViewModel = Provider.of<ContactsViewModel>(
@@ -54,7 +54,7 @@ class AddContactPage extends StatelessWidget {
                     AddContactHeader(
                       onCancel: () => Navigator.pop(context),
                       canSave: viewModel.canSave,
-                      onSave: () => _handleSave(context, viewModel),
+                      onSave: () => handleSave(context, viewModel),
                     ),
                     Expanded(
                       child: SingleChildScrollView(

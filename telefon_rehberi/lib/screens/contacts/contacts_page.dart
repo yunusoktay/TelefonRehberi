@@ -30,17 +30,83 @@ class ContactsPage extends StatelessWidget {
               Expanded(
                 child: Consumer<ContactsViewModel>(
                   builder: (context, viewModel, child) {
-                    if (viewModel.contacts.isNotEmpty) {
+                    final groupedContacts = viewModel.groupedContacts;
+                    if (groupedContacts.isNotEmpty) {
+                      final sortedKeys = groupedContacts.keys.toList()..sort();
                       return ListView.builder(
-                        padding: const EdgeInsets.only(top: 10),
-                        itemCount: viewModel.contacts.length,
+                        padding: const EdgeInsets.only(top: 10, bottom: 40),
+                        itemCount: sortedKeys.length,
                         itemBuilder: (context, index) {
-                          final contact = viewModel.contacts[index];
-                          return ContactCard(
-                            contact: contact,
-                            onTap: () {
-                              // TODO: Navigate to details
-                            },
+                          final letter = sortedKeys[index];
+                          final contacts = groupedContacts[letter]!;
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16.0),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              clipBehavior: Clip.hardEdge,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      16,
+                                      12,
+                                      16,
+                                      8,
+                                    ),
+                                    child: Text(
+                                      letter,
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w600,
+                                        color: Colors.grey[400],
+                                      ),
+                                    ),
+                                  ),
+                                  const Divider(
+                                    height: 1,
+                                    color: Color(0xFFF2F2F7),
+                                    indent: 16,
+                                    endIndent: 16,
+                                  ),
+
+                                  Column(
+                                    children: [
+                                      for (
+                                        int i = 0;
+                                        i < contacts.length;
+                                        i++
+                                      ) ...[
+                                        ContactCard(
+                                          contact: contacts[i],
+                                          onTap: () {
+                                            // TODO: Navigate to details
+                                          },
+                                          onEdit: () {
+                                            // TODO: Implement Edit
+                                          },
+                                          onDelete: () {
+                                            viewModel.deleteContact(
+                                              contacts[i],
+                                            );
+                                          },
+                                        ),
+                                        if (i != contacts.length - 1)
+                                          const Divider(
+                                            height: 1,
+                                            color: Color(0xFFF2F2F7),
+                                            indent: 16,
+                                            endIndent: 16,
+                                          ),
+                                      ],
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           );
                         },
                       );
