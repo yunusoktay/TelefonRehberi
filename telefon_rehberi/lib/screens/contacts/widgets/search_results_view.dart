@@ -87,7 +87,7 @@ class SearchEmptyState extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(32),
             decoration: const BoxDecoration(
-              color: Color(0xFFE0E0E0),
+              color: AppColors.gray200,
               shape: BoxShape.circle,
             ),
             child: SvgPicture.asset(
