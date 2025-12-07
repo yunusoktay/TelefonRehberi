@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'contacts_view_model.dart';
@@ -10,8 +9,8 @@ import 'widgets/contacts_empty_state.dart';
 import 'widgets/contact_card.dart';
 import 'widgets/search_history_view.dart';
 import 'widgets/search_results_view.dart';
+import '../profile/profile_page.dart';
 
-@RoutePage()
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
 
@@ -42,7 +41,7 @@ class _ContactsPageState extends State<ContactsPage> {
   }
 
   void _onSearchQueryChanged(String query) {
-    setState(() {}); // Rebuild to switch views
+    setState(() {});
     Provider.of<ContactsViewModel>(
       context,
       listen: false,
@@ -84,13 +83,11 @@ class _ContactsPageState extends State<ContactsPage> {
                 Expanded(
                   child: Consumer<ContactsViewModel>(
                     builder: (context, viewModel, child) {
-                      // Check if we are in "Search Mode" (focused or has text)
                       final bool isSearching =
                           _searchFocusNode.hasFocus ||
                           _searchController.text.isNotEmpty;
 
                       if (isSearching) {
-                        // 1. Search History (Focused + Empty Text)
                         if (_searchController.text.isEmpty) {
                           return SearchHistoryView(
                             history: viewModel.searchHistory,
@@ -99,17 +96,14 @@ class _ContactsPageState extends State<ContactsPage> {
                             onSelect: (value) {
                               _searchController.text = value;
                               _onSearchQueryChanged(value);
-                              _searchFocusNode
-                                  .unfocus(); // Optional: close keyboard on select
+                              _searchFocusNode.unfocus();
                               _onSearchSubmitted(value);
                             },
                           );
                         }
 
-                        // 2. Search Results
                         final filteredContacts = viewModel.filteredContacts;
                         if (filteredContacts.isEmpty) {
-                          // 3. No Results
                           return const SearchEmptyState();
                         } else {
                           return SearchResultsView(
@@ -124,7 +118,6 @@ class _ContactsPageState extends State<ContactsPage> {
                         }
                       }
 
-                      // 4. Default List (Not Searching)
                       if (viewModel.isLoading) {
                         return const Center(child: CircularProgressIndicator());
                       }
@@ -184,11 +177,21 @@ class _ContactsPageState extends State<ContactsPage> {
                                                   contacts[i].phoneNumber,
                                                 ),
                                             onTap: () {
-                                              // TODO: Navigate to details
+                                              showModalBottomSheet(
+                                                context: context,
+                                                backgroundColor:
+                                                    Colors.transparent,
+                                                isScrollControlled: true,
+                                                barrierColor: const Color(
+                                                  0xFF616161,
+                                                ),
+                                                builder: (context) =>
+                                                    ProfilePage(
+                                                      contact: contacts[i],
+                                                    ),
+                                              );
                                             },
-                                            onEdit: () {
-                                              // TODO: Implement Edit
-                                            },
+                                            onEdit: () {},
                                             onDelete: () {
                                               viewModel.deleteContact(
                                                 contacts[i],

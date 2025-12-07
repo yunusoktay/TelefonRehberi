@@ -1,4 +1,3 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'add_contact_view_model.dart';
@@ -9,7 +8,6 @@ import 'widgets/add_contact_form.dart';
 import 'widgets/success_animation_screen.dart';
 import 'widgets/photo_selection_sheet.dart';
 
-@RoutePage()
 class AddContactPage extends StatelessWidget {
   const AddContactPage({super.key});
 

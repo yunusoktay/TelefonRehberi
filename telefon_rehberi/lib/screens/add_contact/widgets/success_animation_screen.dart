@@ -1,10 +1,8 @@
-import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 
-@RoutePage()
 class SuccessAnimationScreen extends StatelessWidget {
   const SuccessAnimationScreen({super.key});
 

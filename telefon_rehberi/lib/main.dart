@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/contacts/contacts_view_model.dart';
-import 'core/router/app_router.dart';
+import 'screens/contacts/contacts_page.dart';
 
 import 'dart:io';
 
 void main() {
   HttpOverrides.global = MyHttpOverrides();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyHttpOverrides extends HttpOverrides {
@@ -21,15 +21,13 @@ class MyHttpOverrides extends HttpOverrides {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({super.key});
-
-  final _appRouter = AppRouter();
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => ContactsViewModel())],
-      child: MaterialApp.router(
+      child: MaterialApp(
         title: 'Telefon Rehberi',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -38,7 +36,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           textTheme: GoogleFonts.mulishTextTheme(),
         ),
-        routerConfig: _appRouter.config(),
+        home: const ContactsPage(),
       ),
     );
   }

@@ -9,10 +9,21 @@ class ContactsViewModel extends ChangeNotifier {
   final Set<String> _devicePhoneNumbers = {};
   bool _isLoading = false;
   String? _error;
+  bool _showUpdateSuccess = false;
 
   List<Contact> get contacts => _contacts;
   bool get isLoading => _isLoading;
   String? get error => _error;
+  bool get showUpdateSuccess => _showUpdateSuccess;
+
+  void showUpdateSuccessMessage() {
+    _showUpdateSuccess = true;
+    notifyListeners();
+    Future.delayed(const Duration(seconds: 3), () {
+      _showUpdateSuccess = false;
+      notifyListeners();
+    });
+  }
 
   ContactsViewModel() {
     _init();
@@ -150,6 +161,36 @@ class ContactsViewModel extends ChangeNotifier {
       return await _repository.uploadImage(filePath);
     } catch (e) {
       debugPrint('Error uploading image: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> updateContact(Contact contact) async {
+    try {
+      await _repository.updateContact(contact);
+      await _fetchContacts();
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      debugPrint('Error updating contact: $e');
+      rethrow;
+    }
+  }
+
+  Future<void> saveContactToDevice(Contact contact) async {
+    try {
+      if (await flutter_contacts.FlutterContacts.requestPermission()) {
+        final newContact = flutter_contacts.Contact()
+          ..name.first = contact.firstName
+          ..name.last = contact.lastName
+          ..phones = [flutter_contacts.Phone(contact.phoneNumber)];
+
+        await newContact.insert();
+        await _fetchDeviceContacts();
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error saving to device: $e');
       rethrow;
     }
   }

@@ -19,6 +19,7 @@ class ContactsHeader extends StatelessWidget {
               context: context,
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
+              barrierColor: Colors.grey,
               builder: (context) => Container(
                 height: MediaQuery.of(context).size.height * 0.9,
                 decoration: const BoxDecoration(
