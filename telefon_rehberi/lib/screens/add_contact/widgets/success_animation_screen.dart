@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
+import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 
 class SuccessAnimationScreen extends StatelessWidget {
   const SuccessAnimationScreen({super.key});
@@ -22,34 +24,28 @@ class SuccessAnimationScreen extends StatelessWidget {
               repeat: false,
               delegates: LottieDelegates(
                 values: [
-                  ValueDelegate.color(
-                    const ['**', 'Fill 1', '**'],
-                    value: const Color(0xFF12B76A),
-                  ),
-                  ValueDelegate.color(
-                    const ['**', 'Stroke 1', '**'],
-                    value: Colors.white,
-                  ),
+                  ValueDelegate.color(const [
+                    '**',
+                    'Fill 1',
+                    '**',
+                  ], value: AppColors.greenSuccess),
+                  ValueDelegate.color(const [
+                    '**',
+                    'Stroke 1',
+                    '**',
+                  ], value: Colors.white),
                 ],
               ),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'All Done!',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-              ),
+              style: AppTextStyles.headline.copyWith(fontSize: 24),
             ),
             const SizedBox(height: 8),
-            const Text(
+            Text(
               'New contact saved 🎉',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.black,
-                fontWeight: FontWeight.w500,
-              ),
+              style: AppTextStyles.bodyMedium.copyWith(fontSize: 16),
             ),
           ],
         ),

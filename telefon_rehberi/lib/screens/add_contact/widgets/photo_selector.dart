@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
+import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 
 class PhotoSelector extends StatelessWidget {
   final String? imagePath;
@@ -21,7 +23,7 @@ class PhotoSelector extends StatelessWidget {
             width: 120,
             height: 120,
             decoration: BoxDecoration(
-              color: Colors.grey[300],
+              color: AppColors.avatarPlaceholder,
               shape: BoxShape.circle,
               image: imagePath != null
                   ? DecorationImage(
@@ -31,20 +33,21 @@ class PhotoSelector extends StatelessWidget {
                   : null,
             ),
             child: imagePath == null
-                ? const Icon(
-                    Icons.person,
-                    size: 100,
-                    color: Colors.white,
+                ? Center(
+                    child: Icon(
+                      Icons.person,
+                      size: 100,
+                      color: AppColors.inputBackground,
+                    ),
                   )
                 : null,
           ),
           const SizedBox(height: 12),
-          const Text(
+          Text(
             'Add Photo',
-            style: TextStyle(
-              color: Color(0xFF007AFF),
-              fontWeight: FontWeight.w600,
-              fontSize: 20,
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.primary,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ],

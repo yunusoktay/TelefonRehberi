@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
+import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 import '../../../model/contact.dart';
 
 class ContactCard extends StatelessWidget {
@@ -33,7 +35,7 @@ class ContactCard extends StatelessWidget {
           ),
           SlidableAction(
             onPressed: (context) => onDelete?.call(),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.redDelete,
             foregroundColor: Colors.white,
             icon: Icons.delete,
             label: 'Delete',
@@ -52,7 +54,7 @@ class ContactCard extends StatelessWidget {
                 height: 56,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: Colors.grey[200],
+                  color: AppColors.avatarPlaceholder,
                   image: contact.imagePath != null
                       ? DecorationImage(
                           image: FileImage(File(contact.imagePath!)),
@@ -66,10 +68,8 @@ class ContactCard extends StatelessWidget {
                           contact.firstName.isNotEmpty
                               ? contact.firstName[0].toUpperCase()
                               : '?',
-                          style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
+                          style: AppTextStyles.headline.copyWith(
+                            color: AppColors.sectionHeader,
                           ),
                         ),
                       )
@@ -83,21 +83,10 @@ class ContactCard extends StatelessWidget {
                   children: [
                     Text(
                       '${contact.firstName} ${contact.lastName}',
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF1C1C1E),
-                      ),
+                      style: AppTextStyles.titleMediumSemiBold,
                     ),
                     const SizedBox(height: 4),
-                    Text(
-                      contact.phoneNumber,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[600],
-                      ),
-                    ),
+                    Text(contact.phoneNumber, style: AppTextStyles.bodyRegular),
                   ],
                 ),
               ),

@@ -19,7 +19,6 @@ class MyApp extends StatelessWidget {
         title: 'Telefon Rehberi',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          // Using a light theme to match the design
           scaffoldBackgroundColor: const Color(0xFFF9F9F9),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,

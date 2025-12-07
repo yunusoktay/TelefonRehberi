@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
+import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 import 'package:image_picker/image_picker.dart';
 
 class PhotoSelectionSheet extends StatelessWidget {
@@ -10,7 +13,7 @@ class PhotoSelectionSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: Colors.white,
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.only(
           topLeft: Radius.circular(20),
           topRight: Radius.circular(20),
@@ -23,27 +26,43 @@ class PhotoSelectionSheet extends StatelessWidget {
           _buildCapsuleButton(
             context,
             title: 'Camera',
-            icon: Icons.camera_alt_outlined,
+            icon: SvgPicture.asset(
+              'assets/icons/camera.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(
+                AppColors.textPrimary,
+                BlendMode.srcIn,
+              ),
+            ),
             onTap: () => onImageSourceSelected(ImageSource.camera),
           ),
           const SizedBox(height: 8),
           _buildCapsuleButton(
             context,
             title: 'Gallery',
-            icon: Icons.image_outlined,
+            icon: SvgPicture.asset(
+              'assets/icons/gallery.svg',
+              width: 24,
+              height: 24,
+              colorFilter: const ColorFilter.mode(
+                AppColors.textPrimary,
+                BlendMode.srcIn,
+              ),
+            ),
             onTap: () => onImageSourceSelected(ImageSource.gallery),
           ),
           const SizedBox(height: 24),
           TextButton(
             onPressed: () => Navigator.pop(context),
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.blue,
-              textStyle: const TextStyle(
+            style: TextButton.styleFrom(foregroundColor: AppColors.primary),
+            child: Text(
+              'Cancel',
+              style: AppTextStyles.titleMediumSemiBold.copyWith(
+                color: AppColors.primary,
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
               ),
             ),
-            child: const Text('Cancel'),
           ),
           const SizedBox(height: 10),
         ],
@@ -54,7 +73,7 @@ class PhotoSelectionSheet extends StatelessWidget {
   Widget _buildCapsuleButton(
     BuildContext context, {
     required String title,
-    required IconData icon,
+    required Widget icon,
     required VoidCallback onTap,
   }) {
     return SizedBox(
@@ -66,19 +85,22 @@ class PhotoSelectionSheet extends StatelessWidget {
           onTap();
         },
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Colors.black, width: 1),
+          side: const BorderSide(color: AppColors.textPrimary, width: 1),
           shape: const StadiumBorder(),
-          foregroundColor: Colors.black,
+          foregroundColor: AppColors.textPrimary,
           elevation: 0,
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 24),
+            icon,
             const SizedBox(width: 8),
             Text(
               title,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+              style: AppTextStyles.titleMediumSemiBold.copyWith(
+                fontSize: 18,
+                color: AppColors.textPrimary,
+              ),
             ),
           ],
         ),

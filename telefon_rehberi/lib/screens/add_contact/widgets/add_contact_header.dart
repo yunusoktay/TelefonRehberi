@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
+import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 
 class AddContactHeader extends StatelessWidget {
   final VoidCallback onCancel;
@@ -21,30 +23,23 @@ class AddContactHeader extends StatelessWidget {
         children: [
           GestureDetector(
             onTap: onCancel,
-            child: const Text(
+            child: Text(
               'Cancel',
-              style: TextStyle(
-                color: Color(0xFF007AFF),
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.primary,
                 fontSize: 17,
               ),
             ),
           ),
-          const Text(
-            'New Contact',
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.w600,
-              fontSize: 22,
-            ),
-          ),
+          Text('New Contact', style: AppTextStyles.headline),
           GestureDetector(
             onTap: canSave ? onSave : null,
             child: Text(
               'Done',
-              style: TextStyle(
-                color: canSave ? const Color(0xFF007AFF) : Colors.grey,
-                fontWeight: FontWeight.w600,
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: canSave ? AppColors.primary : AppColors.textSecondary,
                 fontSize: 17,
+                fontWeight: FontWeight.bold,
               ),
             ),
           ),

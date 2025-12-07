@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'contacts_view_model.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
+import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 import 'widgets/contacts_header.dart';
 import 'widgets/contact_search_bar.dart';
 import 'widgets/contacts_empty_state.dart';
@@ -59,16 +61,12 @@ class ContactsPage extends StatelessWidget {
                                     ),
                                     child: Text(
                                       letter,
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.w600,
-                                        color: Colors.grey[400],
-                                      ),
+                                      style: AppTextStyles.titleLarge,
                                     ),
                                   ),
                                   const Divider(
                                     height: 1,
-                                    color: Color(0xFFF2F2F7),
+                                    color: AppColors.divider,
                                     indent: 16,
                                     endIndent: 16,
                                   ),
@@ -97,7 +95,7 @@ class ContactsPage extends StatelessWidget {
                                         if (i != contacts.length - 1)
                                           const Divider(
                                             height: 1,
-                                            color: Color(0xFFF2F2F7),
+                                            color: AppColors.divider,
                                             indent: 16,
                                             endIndent: 16,
                                           ),

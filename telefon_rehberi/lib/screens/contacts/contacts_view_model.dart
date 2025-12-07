@@ -8,7 +8,8 @@ class ContactsViewModel extends ChangeNotifier {
   Map<String, List<Contact>> get groupedContacts {
     final sortedContacts = List<Contact>.from(_contacts)
       ..sort(
-        (a, b) => a.firstName.toLowerCase().compareTo(b.firstName.toLowerCase()),
+        (a, b) =>
+            a.firstName.toLowerCase().compareTo(b.firstName.toLowerCase()),
       );
 
     final Map<String, List<Contact>> groups = {};
