@@ -40,17 +40,26 @@ class AddContactViewModel extends ChangeNotifier {
     }
   }
 
-  void saveContact(ContactsViewModel contactsViewModel) {
+  Future<void> saveContact(ContactsViewModel contactsViewModel) async {
     if (!canSave) return;
+
+    String? imageUrl;
+    if (_imagePath != null) {
+      try {
+        imageUrl = await contactsViewModel.uploadImage(_imagePath!);
+      } catch (e) {
+        rethrow;
+      }
+    }
 
     final newContact = Contact(
       id: DateTime.now().toString(),
       firstName: _firstName,
       lastName: _lastName,
       phoneNumber: _phoneNumber,
-      imagePath: _imagePath,
+      imagePath: imageUrl,
     );
 
-    contactsViewModel.addContact(newContact);
+    await contactsViewModel.addContact(newContact);
   }
 }

@@ -34,6 +34,12 @@ class ContactsPage extends StatelessWidget {
               Expanded(
                 child: Consumer<ContactsViewModel>(
                   builder: (context, viewModel, child) {
+                    if (viewModel.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                    if (viewModel.error != null) {
+                      return Center(child: Text('Error: ${viewModel.error}'));
+                    }
                     final groupedContacts = viewModel.groupedContacts;
                     if (groupedContacts.isNotEmpty) {
                       final sortedKeys = groupedContacts.keys.toList()..sort();
@@ -82,6 +88,10 @@ class ContactsPage extends StatelessWidget {
                                       ) ...[
                                         ContactCard(
                                           contact: contacts[i],
+                                          isDeviceContact: viewModel
+                                              .isContactInDevice(
+                                                contacts[i].phoneNumber,
+                                              ),
                                           onTap: () {
                                             // TODO: Navigate to details
                                           },

@@ -15,28 +15,38 @@ class AddContactPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void handleSave(BuildContext context, AddContactViewModel viewModel) {
+    Future<void> handleSave(
+      BuildContext context,
+      AddContactViewModel viewModel,
+    ) async {
       final navigator = Navigator.of(context);
+      final messenger = ScaffoldMessenger.of(context);
 
       final contactsViewModel = Provider.of<ContactsViewModel>(
         context,
         listen: false,
       );
 
-      viewModel.saveContact(contactsViewModel);
+      try {
+        await viewModel.saveContact(contactsViewModel);
 
-      navigator.pushReplacement(
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) =>
-              const SuccessAnimationScreen(),
-          transitionDuration: Duration.zero,
-          reverseTransitionDuration: Duration.zero,
-        ),
-      );
+        navigator.pushReplacement(
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                const SuccessAnimationScreen(),
+            transitionDuration: Duration.zero,
+            reverseTransitionDuration: Duration.zero,
+          ),
+        );
 
-      Future.delayed(const Duration(seconds: 3), () {
-        navigator.pop();
-      });
+        Future.delayed(const Duration(seconds: 3), () {
+          navigator.pop();
+        });
+      } catch (e) {
+        messenger.showSnackBar(
+          SnackBar(content: Text('Failed to save contact: $e')),
+        );
+      }
     }
 
     return ChangeNotifierProvider(

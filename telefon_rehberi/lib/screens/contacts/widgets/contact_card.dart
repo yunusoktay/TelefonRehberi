@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
+import 'package:telefon_rehberi/core/constants/api_constants.dart';
 import '../../../model/contact.dart';
 
 class ContactCard extends StatelessWidget {
   final Contact contact;
+  final bool isDeviceContact;
   final VoidCallback? onTap;
   final VoidCallback? onEdit;
   final VoidCallback? onDelete;
@@ -14,6 +17,7 @@ class ContactCard extends StatelessWidget {
   const ContactCard({
     super.key,
     required this.contact,
+    this.isDeviceContact = false,
     this.onTap,
     this.onEdit,
     this.onDelete,
@@ -49,31 +53,56 @@ class ContactCard extends StatelessWidget {
           decoration: const BoxDecoration(color: Colors.white),
           child: Row(
             children: [
-              Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: AppColors.avatarPlaceholder,
-                  image: contact.imagePath != null
-                      ? DecorationImage(
-                          image: FileImage(File(contact.imagePath!)),
-                          fit: BoxFit.cover,
-                        )
-                      : null,
-                ),
-                child: contact.imagePath == null
-                    ? Center(
-                        child: Text(
-                          contact.firstName.isNotEmpty
-                              ? contact.firstName[0].toUpperCase()
-                              : '?',
-                          style: AppTextStyles.headline.copyWith(
-                            color: AppColors.sectionHeader,
+              Stack(
+                children: [
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.blue50,
+                      image: contact.imagePath != null
+                          ? DecorationImage(
+                              image: _getImageProvider(contact.imagePath!),
+                              fit: BoxFit.cover,
+                            )
+                          : null,
+                    ),
+                    child: contact.imagePath == null
+                        ? Center(
+                            child: Text(
+                              contact.firstName.isNotEmpty
+                                  ? contact.firstName[0].toUpperCase()
+                                  : '?',
+                              style: AppTextStyles.headline.copyWith(
+                                color: AppColors.primaryBlue,
+                              ),
+                            ),
+                          )
+                        : null,
+                  ),
+                  if (isDeviceContact)
+                    Positioned(
+                      right: 0,
+                      bottom: 0,
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: const BoxDecoration(
+                          color: AppColors.primaryBlue,
+                          shape: BoxShape.circle,
+                        ),
+                        padding: const EdgeInsets.all(4),
+                        child: SvgPicture.asset(
+                          'assets/icons/telephone.svg',
+                          colorFilter: const ColorFilter.mode(
+                            Colors.white,
+                            BlendMode.srcIn,
                           ),
                         ),
-                      )
-                    : null,
+                      ),
+                    ),
+                ],
               ),
               const SizedBox(width: 16),
 
@@ -95,5 +124,15 @@ class ContactCard extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  ImageProvider _getImageProvider(String path) {
+    if (path.startsWith('http')) {
+      return NetworkImage(path);
+    } else if (!path.startsWith('/')) {
+      return NetworkImage('${ApiConstants.baseUrl}$path');
+    } else {
+      return FileImage(File(path));
+    }
   }
 }

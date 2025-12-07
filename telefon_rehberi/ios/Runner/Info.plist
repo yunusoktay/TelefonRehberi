@@ -45,6 +45,8 @@
 	<string>We need access to your photo library to select a contact photo.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>We need access to your camera to take a contact photo.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>We need access to your contacts to verify which contacts are saved on your device.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
