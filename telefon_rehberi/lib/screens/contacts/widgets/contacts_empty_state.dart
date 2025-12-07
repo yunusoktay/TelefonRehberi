@@ -52,7 +52,7 @@ class ContactsEmptyState extends StatelessWidget {
               builder: (context) => Container(
                 height: MediaQuery.of(context).size.height * 0.9,
                 decoration: const BoxDecoration(
-                  color: Color(0xFFF9F9F9),
+                  color: AppColors.surface,
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20),

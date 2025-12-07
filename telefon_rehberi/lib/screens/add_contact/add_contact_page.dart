@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'add_contact_view_model.dart';
 import '../contacts/contacts_view_model.dart';
 import 'widgets/photo_selector.dart';
@@ -37,7 +38,7 @@ class AddContactPage extends StatelessWidget {
           ),
         );
 
-        Future.delayed(const Duration(seconds: 3), () {
+        Future.delayed(const Duration(seconds: 2), () {
           navigator.pop();
         });
       } else {
@@ -63,7 +64,7 @@ class AddContactPage extends StatelessWidget {
             child: GestureDetector(
               onTap: () => FocusScope.of(context).unfocus(),
               child: Scaffold(
-                backgroundColor: const Color(0xFFFFFFFF),
+                backgroundColor: AppColors.cardBackground,
                 body: SafeArea(
                   child: Column(
                     children: [

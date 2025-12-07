@@ -7,16 +7,13 @@ class ApiClient {
   final Dio _dio;
 
   ApiClient()
-      : _dio = Dio(
-          BaseOptions(
-            baseUrl: ApiConstants.baseUrl,
-            headers: {
-              'accept': 'text/plain',
-              'ApiKey': ApiConstants.apiKey,
-            },
-            validateStatus: (status) => status != null && status < 500,
-          ),
-        ) {
+    : _dio = Dio(
+        BaseOptions(
+          baseUrl: ApiConstants.baseUrl,
+          headers: {'accept': 'text/plain', 'ApiKey': ApiConstants.apiKey},
+          validateStatus: (status) => status != null && status < 500,
+        ),
+      ) {
     // Ignore SSL errors for development
     _dio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {

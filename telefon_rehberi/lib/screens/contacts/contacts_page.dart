@@ -10,6 +10,8 @@ import 'widgets/search_results_view.dart';
 import 'widgets/contact_list_view.dart';
 import '../profile/profile_page.dart';
 import '../../core/widgets/success_toast.dart';
+import '../../core/utils/dialog_utils.dart';
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
 
 class ContactsPage extends StatefulWidget {
   const ContactsPage({super.key});
@@ -18,7 +20,8 @@ class ContactsPage extends StatefulWidget {
   State<ContactsPage> createState() => _ContactsPageState();
 }
 
-class _ContactsPageState extends State<ContactsPage> {
+class _ContactsPageState extends State<ContactsPage>
+    with WidgetsBindingObserver {
   final TextEditingController _searchController = TextEditingController();
   final FocusNode _searchFocusNode = FocusNode();
   final FocusNode _dummyFocusNode = FocusNode();
@@ -26,11 +29,23 @@ class _ContactsPageState extends State<ContactsPage> {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _searchFocusNode.addListener(_onFocusChange);
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      Provider.of<ContactsViewModel>(
+        context,
+        listen: false,
+      ).refreshDeviceContacts();
+    }
+  }
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _searchFocusNode.removeListener(_onFocusChange);
     _searchFocusNode.dispose();
     _dummyFocusNode.dispose();
@@ -79,7 +94,7 @@ class _ContactsPageState extends State<ContactsPage> {
       child: Consumer<ContactsViewModel>(
         builder: (context, contactsViewModel, _) {
           return Scaffold(
-            backgroundColor: const Color(0xFFF9F9F9),
+            backgroundColor: AppColors.surface,
             body: Stack(
               children: [
                 SizedBox.shrink(
@@ -88,6 +103,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     child: const SizedBox.shrink(),
                   ),
                 ),
+
                 SafeArea(
                   bottom: false,
                   child: Padding(
@@ -138,9 +154,20 @@ class _ContactsPageState extends State<ContactsPage> {
                                     isDeviceContact:
                                         viewModel.isContactInDevice,
                                     onDelete: (contact) {
-                                      viewModel.deleteContact(contact);
-                                      _searchController.clear();
-                                      _onSearchQueryChanged('');
+                                      _onBeforeModalOpen();
+                                      FocusScope.of(context).unfocus();
+                                      DialogUtils.showDeleteConfirmationSheet(
+                                        context: context,
+                                        onConfirm: () {
+                                          viewModel.deleteContact(contact);
+                                          _searchController.clear();
+                                          _onSearchQueryChanged('');
+                                          _onAfterModalClose();
+                                        },
+                                        onCancel: () {
+                                          _onAfterModalClose();
+                                        },
+                                      ).then((_) {});
                                     },
                                   );
                                 }
@@ -162,8 +189,45 @@ class _ContactsPageState extends State<ContactsPage> {
                                   groupedContacts: groupedContacts,
                                   isContactInDevice:
                                       viewModel.isContactInDevice,
-                                  onDelete: (contact) =>
-                                      viewModel.deleteContact(contact),
+                                  onDelete: (contact) {
+                                    _onBeforeModalOpen();
+                                    FocusScope.of(context).unfocus();
+                                    DialogUtils.showDeleteConfirmationSheet(
+                                      context: context,
+                                      onConfirm: () {
+                                        viewModel.deleteContact(contact);
+                                        _onAfterModalClose();
+                                      },
+                                      onCancel: () {
+                                        _onAfterModalClose();
+                                      },
+                                    );
+                                  },
+                                  onEdit: (contact) async {
+                                    _onBeforeModalOpen();
+                                    FocusScope.of(context).unfocus();
+                                    await showModalBottomSheet(
+                                      context: context,
+                                      backgroundColor: Colors.transparent,
+                                      isScrollControlled: true,
+                                      barrierColor: AppColors.modalBarrier,
+                                      enableDrag: true,
+                                      isDismissible: true,
+                                      builder: (context) => ProfilePage(
+                                        contact: contact,
+                                        isEditing: true,
+                                      ),
+                                    );
+                                    if (context.mounted) {
+                                      await Future.delayed(
+                                        const Duration(milliseconds: 100),
+                                      );
+                                      if (context.mounted) {
+                                        FocusScope.of(context).unfocus();
+                                        _onAfterModalClose();
+                                      }
+                                    }
+                                  },
                                   onTap: (contact) async {
                                     _onBeforeModalOpen();
                                     FocusScope.of(context).unfocus();
@@ -171,7 +235,7 @@ class _ContactsPageState extends State<ContactsPage> {
                                       context: context,
                                       backgroundColor: Colors.transparent,
                                       isScrollControlled: true,
-                                      barrierColor: const Color(0xFF616161),
+                                      barrierColor: AppColors.modalBarrier,
                                       enableDrag: true,
                                       isDismissible: true,
                                       builder: (context) =>
@@ -207,6 +271,13 @@ class _ContactsPageState extends State<ContactsPage> {
                     left: 20,
                     right: 20,
                     child: SuccessToast(message: 'User is updated!'),
+                  ),
+                if (contactsViewModel.showDeleteSuccess)
+                  const Positioned(
+                    bottom: 40,
+                    left: 20,
+                    right: 20,
+                    child: SuccessToast(message: 'User is deleted!'),
                   ),
               ],
             ),

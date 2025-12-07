@@ -8,6 +8,7 @@ class ContactListView extends StatelessWidget {
   final Map<String, List<Contact>> groupedContacts;
   final bool Function(String) isContactInDevice;
   final Function(Contact) onTap;
+  final Function(Contact) onEdit;
   final Function(Contact) onDelete;
 
   const ContactListView({
@@ -15,6 +16,7 @@ class ContactListView extends StatelessWidget {
     required this.groupedContacts,
     required this.isContactInDevice,
     required this.onTap,
+    required this.onEdit,
     required this.onDelete,
   });
 
@@ -59,7 +61,7 @@ class ContactListView extends StatelessWidget {
                           contacts[i].phoneNumber,
                         ),
                         onTap: () => onTap(contacts[i]),
-                        onEdit: () {},
+                        onEdit: () => onEdit(contacts[i]),
                         onDelete: () => onDelete(contacts[i]),
                       ),
                       if (i != contacts.length - 1)

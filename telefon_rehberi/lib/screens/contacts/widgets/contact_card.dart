@@ -29,20 +29,33 @@ class ContactCard extends StatelessWidget {
       key: ValueKey(contact.id),
       endActionPane: ActionPane(
         motion: const ScrollMotion(),
+        extentRatio: 0.30,
         children: [
-          SlidableAction(
+          CustomSlidableAction(
+            padding: EdgeInsets.zero,
             onPressed: (context) => onEdit?.call(),
-            backgroundColor: Colors.blue,
+            backgroundColor: AppColors.primaryBlue,
             foregroundColor: Colors.white,
-            icon: Icons.edit,
-            label: 'Edit',
+            child: SvgPicture.asset(
+              'assets/icons/edit.svg',
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
-          SlidableAction(
+          CustomSlidableAction(
+            padding: EdgeInsets.zero,
             onPressed: (context) => onDelete?.call(),
             backgroundColor: AppColors.redDelete,
             foregroundColor: Colors.white,
-            icon: Icons.delete,
-            label: 'Delete',
+            child: SvgPicture.asset(
+              'assets/icons/delete.svg',
+              colorFilter: const ColorFilter.mode(
+                Colors.white,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
         ],
       ),

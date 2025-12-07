@@ -16,11 +16,23 @@ class ContactsViewModel extends ChangeNotifier {
   String? get error => _error;
   bool get showUpdateSuccess => _showUpdateSuccess;
 
+  bool _showDeleteSuccess = false;
+  bool get showDeleteSuccess => _showDeleteSuccess;
+
   void showUpdateSuccessMessage() {
     _showUpdateSuccess = true;
     notifyListeners();
     Future.delayed(const Duration(seconds: 3), () {
       _showUpdateSuccess = false;
+      notifyListeners();
+    });
+  }
+
+  void showDeleteSuccessMessage() {
+    _showDeleteSuccess = true;
+    notifyListeners();
+    Future.delayed(const Duration(seconds: 3), () {
+      _showDeleteSuccess = false;
       notifyListeners();
     });
   }
@@ -33,7 +45,7 @@ class ContactsViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    await Future.wait([_fetchContacts(), _fetchDeviceContacts()]);
+    await Future.wait([_fetchContacts(), refreshDeviceContacts()]);
 
     _isLoading = false;
     notifyListeners();
@@ -50,7 +62,7 @@ class ContactsViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> _fetchDeviceContacts() async {
+  Future<void> refreshDeviceContacts() async {
     try {
       if (await flutter_contacts.FlutterContacts.requestPermission(
         readonly: true,
@@ -64,6 +76,7 @@ class ContactsViewModel extends ChangeNotifier {
             _devicePhoneNumbers.add(_normalizePhoneNumber(phone.number));
           }
         }
+        notifyListeners();
       }
     } catch (e) {
       debugPrint('Error fetching device contacts: $e');
@@ -186,7 +199,7 @@ class ContactsViewModel extends ChangeNotifier {
           ..phones = [flutter_contacts.Phone(contact.phoneNumber)];
 
         await newContact.insert();
-        await _fetchDeviceContacts();
+        await refreshDeviceContacts();
         notifyListeners();
       }
     } catch (e) {
@@ -199,6 +212,7 @@ class ContactsViewModel extends ChangeNotifier {
     try {
       await _repository.deleteContact(contact.id);
       await _fetchContacts();
+      showDeleteSuccessMessage();
     } catch (e) {
       _error = e.toString();
       notifyListeners();

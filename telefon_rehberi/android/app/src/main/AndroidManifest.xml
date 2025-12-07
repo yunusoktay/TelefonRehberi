@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS"/>
 
     <application
-        android:label="telefon_rehberi"
+        android:label="Telefon Rehberi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

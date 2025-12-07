@@ -19,7 +19,7 @@ class PhotoSelectionSheet extends StatelessWidget {
           topRight: Radius.circular(20),
         ),
       ),
-      padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 32),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 32),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -52,7 +52,7 @@ class PhotoSelectionSheet extends StatelessWidget {
             ),
             onTap: () => onImageSourceSelected(ImageSource.gallery),
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
           TextButton(
             onPressed: () => Navigator.pop(context),
             style: TextButton.styleFrom(foregroundColor: AppColors.primary),

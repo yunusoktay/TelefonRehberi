@@ -38,7 +38,8 @@ class ProfileViewModel extends ChangeNotifier {
     });
   }
 
-  ProfileViewModel(this.contact) {
+  ProfileViewModel(this.contact, {bool isEditing = false})
+    : _isEditing = isEditing {
     firstNameController = TextEditingController(text: contact.firstName);
     lastNameController = TextEditingController(text: contact.lastName);
     phoneNumberController = TextEditingController(text: contact.phoneNumber);

@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'screens/contacts/contacts_view_model.dart';
 import 'screens/contacts/contacts_page.dart';
-
+import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'dart:io';
 
 void main() {
@@ -28,10 +28,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => ContactsViewModel())],
       child: MaterialApp(
-        title: 'Telefon Rehberi',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          scaffoldBackgroundColor: const Color(0xFFF9F9F9),
+          scaffoldBackgroundColor: AppColors.surface,
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
           textTheme: GoogleFonts.mulishTextTheme(),

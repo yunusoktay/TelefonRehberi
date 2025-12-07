@@ -10,16 +10,18 @@ import 'widgets/profile_view_header.dart';
 import 'widgets/profile_photo_selector.dart';
 import 'widgets/profile_form.dart';
 import 'widgets/save_to_device_button.dart';
+import '../../core/utils/dialog_utils.dart';
 
 class ProfilePage extends StatelessWidget {
   final Contact contact;
+  final bool isEditing;
 
-  const ProfilePage({super.key, required this.contact});
+  const ProfilePage({super.key, required this.contact, this.isEditing = false});
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => ProfileViewModel(contact),
+      create: (_) => ProfileViewModel(contact, isEditing: isEditing),
       child: Consumer<ProfileViewModel>(
         builder: (context, viewModel, child) {
           final contactsViewModel = Provider.of<ContactsViewModel>(context);
@@ -41,7 +43,7 @@ class ProfilePage extends StatelessWidget {
                   child: Column(
                     children: [
                       const SizedBox(height: 16),
-                      // Header
+
                       if (viewModel.isEditing)
                         ProfileEditHeader(
                           onCancel: () {
@@ -61,8 +63,13 @@ class ProfilePage extends StatelessWidget {
                         ProfileViewHeader(
                           onEdit: () => viewModel.toggleEditing(),
                           onDelete: () {
-                            contactsViewModel.deleteContact(contact);
-                            Navigator.pop(context);
+                            DialogUtils.showDeleteConfirmationSheet(
+                              context: context,
+                              onConfirm: () {
+                                contactsViewModel.deleteContact(contact);
+                                Navigator.pop(context);
+                              },
+                            );
                           },
                         ),
 
