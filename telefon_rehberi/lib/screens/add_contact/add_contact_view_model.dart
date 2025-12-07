@@ -13,6 +13,8 @@ class AddContactViewModel extends ChangeNotifier {
   String get lastName => _lastName;
   String get phoneNumber => _phoneNumber;
   String? get imagePath => _imagePath;
+  String? get error => _error;
+  String? _error;
 
   bool get canSave => _firstName.isNotEmpty && _phoneNumber.isNotEmpty;
 
@@ -40,26 +42,32 @@ class AddContactViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> saveContact(ContactsViewModel contactsViewModel) async {
-    if (!canSave) return;
+  Future<bool> saveContact(ContactsViewModel contactsViewModel) async {
+    if (!canSave) return false;
 
-    String? imageUrl;
-    if (_imagePath != null) {
-      try {
+    _error = null;
+    notifyListeners();
+
+    try {
+      String? imageUrl;
+      if (_imagePath != null) {
         imageUrl = await contactsViewModel.uploadImage(_imagePath!);
-      } catch (e) {
-        rethrow;
       }
+
+      final newContact = Contact(
+        id: DateTime.now().toString(),
+        firstName: _firstName,
+        lastName: _lastName,
+        phoneNumber: _phoneNumber,
+        imagePath: imageUrl,
+      );
+
+      await contactsViewModel.addContact(newContact);
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return false;
     }
-
-    final newContact = Contact(
-      id: DateTime.now().toString(),
-      firstName: _firstName,
-      lastName: _lastName,
-      phoneNumber: _phoneNumber,
-      imagePath: imageUrl,
-    );
-
-    await contactsViewModel.addContact(newContact);
   }
 }

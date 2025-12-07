@@ -25,9 +25,9 @@ class AddContactPage extends StatelessWidget {
         listen: false,
       );
 
-      try {
-        await viewModel.saveContact(contactsViewModel);
+      final success = await viewModel.saveContact(contactsViewModel);
 
+      if (success) {
         navigator.pushReplacement(
           PageRouteBuilder(
             pageBuilder: (context, animation, secondaryAnimation) =>
@@ -40,10 +40,14 @@ class AddContactPage extends StatelessWidget {
         Future.delayed(const Duration(seconds: 3), () {
           navigator.pop();
         });
-      } catch (e) {
-        messenger.showSnackBar(
-          SnackBar(content: Text('Failed to save contact: $e')),
-        );
+      } else {
+        if (context.mounted && viewModel.error != null) {
+          messenger.showSnackBar(
+            SnackBar(
+              content: Text('Failed to save contact: ${viewModel.error}'),
+            ),
+          );
+        }
       }
     }
 
@@ -56,47 +60,50 @@ class AddContactPage extends StatelessWidget {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             ),
-            child: Scaffold(
-              backgroundColor: const Color(0xFFFFFFFF),
-              body: SafeArea(
-                child: Column(
-                  children: [
-                    AddContactHeader(
-                      onCancel: () => Navigator.pop(context),
-                      canSave: viewModel.canSave,
-                      onSave: () => handleSave(context, viewModel),
-                    ),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            const SizedBox(height: 36),
-                            PhotoSelector(
-                              imagePath: viewModel.imagePath,
-                              onTap: () {
-                                showModalBottomSheet(
-                                  context: context,
-                                  backgroundColor: Colors.transparent,
-                                  builder: (context) => PhotoSelectionSheet(
-                                    onImageSourceSelected: (source) {
-                                      viewModel.pickImage(source);
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                            const SizedBox(height: 32),
-                            AddContactForm(
-                              onFirstNameChanged: viewModel.setFirstName,
-                              onLastNameChanged: viewModel.setLastName,
-                              onPhoneNumberChanged: viewModel.setPhoneNumber,
-                            ),
-                            const SizedBox(height: 40),
-                          ],
+            child: GestureDetector(
+              onTap: () => FocusScope.of(context).unfocus(),
+              child: Scaffold(
+                backgroundColor: const Color(0xFFFFFFFF),
+                body: SafeArea(
+                  child: Column(
+                    children: [
+                      AddContactHeader(
+                        onCancel: () => Navigator.pop(context),
+                        canSave: viewModel.canSave,
+                        onSave: () => handleSave(context, viewModel),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 36),
+                              PhotoSelector(
+                                imagePath: viewModel.imagePath,
+                                onTap: () {
+                                  showModalBottomSheet(
+                                    context: context,
+                                    backgroundColor: Colors.transparent,
+                                    builder: (context) => PhotoSelectionSheet(
+                                      onImageSourceSelected: (source) {
+                                        viewModel.pickImage(source);
+                                      },
+                                    ),
+                                  );
+                                },
+                              ),
+                              const SizedBox(height: 32),
+                              AddContactForm(
+                                onFirstNameChanged: viewModel.setFirstName,
+                                onLastNameChanged: viewModel.setLastName,
+                                onPhoneNumberChanged: viewModel.setPhoneNumber,
+                              ),
+                              const SizedBox(height: 40),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

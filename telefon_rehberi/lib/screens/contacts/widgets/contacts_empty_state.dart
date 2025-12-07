@@ -4,7 +4,14 @@ import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 import '../../add_contact/add_contact_page.dart';
 
 class ContactsEmptyState extends StatelessWidget {
-  const ContactsEmptyState({super.key});
+  final VoidCallback? onBeforeModalOpen;
+  final VoidCallback? onAfterModalClose;
+
+  const ContactsEmptyState({
+    super.key,
+    this.onBeforeModalOpen,
+    this.onAfterModalClose,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +40,15 @@ class ContactsEmptyState extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         TextButton(
-          onPressed: () {
-            showModalBottomSheet(
+          onPressed: () async {
+            onBeforeModalOpen?.call();
+            FocusScope.of(context).unfocus();
+            await showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               backgroundColor: Colors.transparent,
+              enableDrag: true,
+              isDismissible: true,
               builder: (context) => Container(
                 height: MediaQuery.of(context).size.height * 0.9,
                 decoration: const BoxDecoration(
@@ -50,6 +61,13 @@ class ContactsEmptyState extends StatelessWidget {
                 child: const AddContactPage(),
               ),
             );
+            if (context.mounted) {
+              await Future.delayed(const Duration(milliseconds: 100));
+              if (context.mounted) {
+                FocusScope.of(context).unfocus();
+                onAfterModalClose?.call();
+              }
+            }
           },
           style: TextButton.styleFrom(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),

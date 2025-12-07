@@ -21,6 +21,9 @@ class ProfileViewModel extends ChangeNotifier {
   bool _showSuccess = false;
   bool get showSuccess => _showSuccess;
 
+  String? _error;
+  String? get error => _error;
+
   void toggleEditing() {
     _isEditing = !_isEditing;
     notifyListeners();
@@ -58,28 +61,42 @@ class ProfileViewModel extends ChangeNotifier {
     }
   }
 
-  Future<void> updateProfile(ContactsViewModel viewModel) async {
-    String? finalImageUrl = contact.imagePath;
-    if (_newImagePath != null) {
-      finalImageUrl = await viewModel.uploadImage(_newImagePath!);
+  Future<bool> updateProfile(ContactsViewModel viewModel) async {
+    _error = null;
+    notifyListeners();
+    try {
+      String? finalImageUrl = contact.imagePath;
+      if (_newImagePath != null) {
+        finalImageUrl = await viewModel.uploadImage(_newImagePath!);
+      }
+
+      final updatedContact = Contact(
+        id: contact.id,
+        firstName: firstNameController.text,
+        lastName: lastNameController.text,
+        phoneNumber: phoneNumberController.text,
+        imagePath: finalImageUrl,
+      );
+
+      await viewModel.updateContact(updatedContact);
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      notifyListeners();
+      return false;
     }
-
-    final updatedContact = Contact(
-      id: contact.id,
-      firstName: firstNameController.text,
-      lastName: lastNameController.text,
-      phoneNumber: phoneNumberController.text,
-      imagePath: finalImageUrl,
-    );
-
-    await viewModel.updateContact(updatedContact);
   }
 
-  Future<void> saveToDevice(ContactsViewModel viewModel) async {
+  Future<bool> saveToDevice(ContactsViewModel viewModel) async {
     _isSavingToDevice = true;
+    _error = null;
     notifyListeners();
     try {
       await viewModel.saveContactToDevice(contact);
+      return true;
+    } catch (e) {
+      _error = e.toString();
+      return false;
     } finally {
       _isSavingToDevice = false;
       notifyListeners();

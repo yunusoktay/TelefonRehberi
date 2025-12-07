@@ -48,6 +48,7 @@ class PhotoSelector extends StatelessWidget {
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w800,
+              fontSize: 15,
             ),
           ),
         ],
