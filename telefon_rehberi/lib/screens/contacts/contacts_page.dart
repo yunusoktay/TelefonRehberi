@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'contacts_view_model.dart';
@@ -8,6 +9,7 @@ import 'widgets/contact_search_bar.dart';
 import 'widgets/contacts_empty_state.dart';
 import 'widgets/contact_card.dart';
 
+@RoutePage()
 class ContactsPage extends StatelessWidget {
   const ContactsPage({super.key});
 

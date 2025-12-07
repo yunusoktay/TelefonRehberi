@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/contacts/contacts_page.dart';
 import 'screens/contacts/contacts_view_model.dart';
+import 'core/router/app_router.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
+
+  final _appRouter = AppRouter();
 
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (_) => ContactsViewModel())],
-      child: MaterialApp(
+      child: MaterialApp.router(
         title: 'Telefon Rehberi',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
@@ -24,7 +26,7 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
           textTheme: GoogleFonts.mulishTextTheme(),
         ),
-        home: const ContactsPage(),
+        routerConfig: _appRouter.config(),
       ),
     );
   }
