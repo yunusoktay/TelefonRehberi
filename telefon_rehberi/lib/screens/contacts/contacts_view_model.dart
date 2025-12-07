@@ -67,8 +67,22 @@ class ContactsViewModel extends ChangeNotifier {
     return _devicePhoneNumbers.contains(_normalizePhoneNumber(phoneNumber));
   }
 
+  String _searchQuery = '';
+
+  void updateSearchQuery(String query) {
+    _searchQuery = query;
+    notifyListeners();
+  }
+
   Map<String, List<Contact>> get groupedContacts {
-    final sortedContacts = List<Contact>.from(_contacts)
+    var filteredContacts = _contacts;
+    if (_searchQuery.isNotEmpty) {
+      filteredContacts = _contacts
+          .where((c) => c.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+          .toList();
+    }
+
+    final sortedContacts = List<Contact>.from(filteredContacts)
       ..sort(
         (a, b) =>
             a.firstName.toLowerCase().compareTo(b.firstName.toLowerCase()),
@@ -96,17 +110,6 @@ class ContactsViewModel extends ChangeNotifier {
       debugPrint('Error adding contact: $e');
       rethrow;
     }
-  }
-
-  List<Contact> searchContacts(String query) {
-    if (query.isEmpty) {
-      return _contacts;
-    }
-    return _contacts
-        .where(
-          (contact) => contact.name.toLowerCase().contains(query.toLowerCase()),
-        )
-        .toList();
   }
 
   Future<String> uploadImage(String filePath) async {

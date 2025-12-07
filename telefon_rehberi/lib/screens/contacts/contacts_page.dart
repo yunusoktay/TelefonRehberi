@@ -28,7 +28,8 @@ class ContactsPage extends StatelessWidget {
               const SizedBox(height: 20),
               ContactSearchBar(
                 onChanged: (value) {
-                  // TODO: Connect to ViewModel search
+                  Provider.of<ContactsViewModel>(context, listen: false)
+                      .updateSearchQuery(value);
                 },
               ),
               Expanded(
