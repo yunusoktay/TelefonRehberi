@@ -63,6 +63,37 @@ class ContactsViewModel extends ChangeNotifier {
     return phone.replaceAll(RegExp(r'[^\d+]'), '');
   }
 
+  final List<String> _searchHistory = [];
+  List<String> get searchHistory => _searchHistory;
+
+  void addToHistory(String query) {
+    if (query.isNotEmpty && !_searchHistory.contains(query)) {
+      _searchHistory.insert(0, query);
+      if (_searchHistory.length > 5) _searchHistory.removeLast();
+      notifyListeners();
+    }
+  }
+
+  void removeFromHistory(String query) {
+    _searchHistory.remove(query);
+    notifyListeners();
+  }
+
+  void clearHistory() {
+    _searchHistory.clear();
+    notifyListeners();
+  }
+
+  List<Contact> get filteredContacts {
+    if (_searchQuery.isEmpty) return _contacts;
+    final query = _searchQuery.toLowerCase();
+    return _contacts.where((c) {
+      final first = c.firstName.toLowerCase();
+      final last = c.lastName.toLowerCase();
+      return first.startsWith(query) || last.startsWith(query);
+    }).toList();
+  }
+
   bool isContactInDevice(String phoneNumber) {
     return _devicePhoneNumbers.contains(_normalizePhoneNumber(phoneNumber));
   }
@@ -78,7 +109,9 @@ class ContactsViewModel extends ChangeNotifier {
     var filteredContacts = _contacts;
     if (_searchQuery.isNotEmpty) {
       filteredContacts = _contacts
-          .where((c) => c.name.toLowerCase().contains(_searchQuery.toLowerCase()))
+          .where(
+            (c) => c.name.toLowerCase().contains(_searchQuery.toLowerCase()),
+          )
           .toList();
     }
 

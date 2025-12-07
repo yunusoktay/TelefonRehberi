@@ -4,8 +4,17 @@ import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 
 class ContactSearchBar extends StatelessWidget {
   final ValueChanged<String> onChanged;
+  final ValueChanged<String>? onSubmitted;
+  final FocusNode? focusNode;
+  final TextEditingController? controller;
 
-  const ContactSearchBar({super.key, required this.onChanged});
+  const ContactSearchBar({
+    super.key,
+    required this.onChanged,
+    this.onSubmitted,
+    this.focusNode,
+    this.controller,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +29,11 @@ class ContactSearchBar extends StatelessWidget {
         ],
       ),
       child: TextField(
+        style: AppTextStyles.bodyRegular.copyWith(
+          color: AppColors.textPrimary,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
         decoration: InputDecoration(
           hintText: 'Search by name',
           hintStyle: AppTextStyles.bodyRegular.copyWith(
@@ -41,6 +55,9 @@ class ContactSearchBar extends StatelessWidget {
           isDense: true,
         ),
         onChanged: onChanged,
+        onSubmitted: onSubmitted,
+        focusNode: focusNode,
+        controller: controller,
       ),
     );
   }

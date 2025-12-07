@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
 import '../../add_contact/add_contact_page.dart';
 
@@ -12,14 +13,8 @@ class ContactsHeader extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text('Contacts', style: AppTextStyles.displayLarge),
-        IconButton.filled(
-          style: IconButton.styleFrom(
-            backgroundColor: const Color(0xFF007AFF),
-            minimumSize: const Size(32, 32),
-            fixedSize: const Size(32, 32),
-            padding: EdgeInsets.zero,
-          ),
-          onPressed: () {
+        InkWell(
+          onTap: () {
             showModalBottomSheet(
               context: context,
               isScrollControlled: true,
@@ -37,7 +32,12 @@ class ContactsHeader extends StatelessWidget {
               ),
             );
           },
-          icon: const Icon(Icons.add, size: 28),
+          borderRadius: BorderRadius.circular(32),
+          child: SvgPicture.asset(
+            'assets/icons/add.svg',
+            width: 32,
+            height: 32,
+          ),
         ),
       ],
     );

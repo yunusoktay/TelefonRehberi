@@ -28,8 +28,7 @@ class AppColors {
   static const Color scaffoldBackground = gray50;
   static const Color cardBackground = Colors.white;
 
-  static const Color divider =
-      gray100; // was F2F2F7, E7E7E7 is slightly darker but fits the "Border" role
+  static const Color divider = Color(0xFFF4F4F4); // Lighter than gray100
 
   static const Color textPrimary = gray950; // Main text
   static const Color textSecondary = gray400; // Subtitles

@@ -63,4 +63,10 @@ class AppTextStyles {
     fontWeight: FontWeight.w500,
     color: AppColors.textPrimary,
   );
+
+  static final TextStyle bodySmall = GoogleFonts.mulish(
+    fontSize: 12,
+    fontWeight: FontWeight.w500,
+    color: AppColors.textSecondary,
+  );
 }
