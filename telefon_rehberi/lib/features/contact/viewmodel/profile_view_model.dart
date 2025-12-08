@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import '../../model/contact.dart';
-import '../contacts/contacts_view_model.dart';
+import '../model/contact.dart';
+import 'contacts_view_model.dart';
 
 class ProfileViewModel extends ChangeNotifier {
   final Contact contact;

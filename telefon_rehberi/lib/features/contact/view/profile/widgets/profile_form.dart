@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../contacts/contacts_view_model.dart';
-import '../profile_view_model.dart';
-import '../../../core/widgets/app_text_field.dart';
+import '../../../viewmodel/contacts_view_model.dart';
+import '../../../viewmodel/profile_view_model.dart';
+import '../../../../../core/widgets/app_text_field.dart';
 
 class ProfileForm extends StatelessWidget {
   const ProfileForm({super.key});

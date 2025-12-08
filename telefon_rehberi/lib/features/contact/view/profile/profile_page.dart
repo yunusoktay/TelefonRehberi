@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:telefon_rehberi/model/contact.dart';
-import '../contacts/contacts_view_model.dart';
+import 'package:telefon_rehberi/features/contact/model/contact.dart';
+import '../../viewmodel/contacts_view_model.dart';
 import '../add_contact/widgets/photo_selection_sheet.dart';
-import 'profile_view_model.dart';
-import '../../core/widgets/success_toast.dart';
+import '../../viewmodel/profile_view_model.dart';
+import '../../../../core/widgets/success_toast.dart';
 import 'widgets/profile_edit_header.dart';
 import 'widgets/profile_view_header.dart';
 import 'widgets/profile_photo_selector.dart';
 import 'widgets/profile_form.dart';
 import 'widgets/save_to_device_button.dart';
-import '../../core/utils/dialog_utils.dart';
+import '../../../../core/utils/dialog_utils.dart';
 
 class ProfilePage extends StatelessWidget {
   final Contact contact;

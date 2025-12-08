@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
-import 'contacts_view_model.dart';
+import '../../viewmodel/contacts_view_model.dart';
 import 'widgets/contacts_header.dart';
 import 'widgets/contact_search_bar.dart';
 import 'widgets/contacts_empty_state.dart';
@@ -9,8 +9,8 @@ import 'widgets/search_history_view.dart';
 import 'widgets/search_results_view.dart';
 import 'widgets/contact_list_view.dart';
 import '../profile/profile_page.dart';
-import '../../core/widgets/success_toast.dart';
-import '../../core/utils/dialog_utils.dart';
+import '../../../../core/widgets/success_toast.dart';
+import '../../../../core/utils/dialog_utils.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
 
 class ContactsPage extends StatefulWidget {

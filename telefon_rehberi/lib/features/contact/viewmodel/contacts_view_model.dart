@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_contacts/flutter_contacts.dart' as flutter_contacts;
-import '../../data/repository/contacts_repository.dart';
-import '../../model/contact.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import '../contacts_repository.dart';
+import '../model/contact.dart';
 
 class ContactsViewModel extends ChangeNotifier {
   final ContactsRepository _repository = ContactsRepository();
@@ -45,10 +46,19 @@ class ContactsViewModel extends ChangeNotifier {
     _isLoading = true;
     notifyListeners();
 
-    await Future.wait([_fetchContacts(), refreshDeviceContacts()]);
-
-    _isLoading = false;
-    notifyListeners();
+    try {
+      await Future.wait([
+        _fetchContacts(),
+        refreshDeviceContacts(),
+        _loadSearchHistory(),
+      ]);
+    } catch (e) {
+      debugPrint('Error initializing contacts view model: $e');
+      _error = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
   }
 
   Future<void> _fetchContacts() async {
@@ -94,17 +104,20 @@ class ContactsViewModel extends ChangeNotifier {
     if (query.isNotEmpty && !_searchHistory.contains(query)) {
       _searchHistory.insert(0, query);
       if (_searchHistory.length > 5) _searchHistory.removeLast();
+      _saveSearchHistory();
       notifyListeners();
     }
   }
 
   void removeFromHistory(String query) {
     _searchHistory.remove(query);
+    _saveSearchHistory();
     notifyListeners();
   }
 
   void clearHistory() {
     _searchHistory.clear();
+    _saveSearchHistory();
     notifyListeners();
   }
 
@@ -218,5 +231,26 @@ class ContactsViewModel extends ChangeNotifier {
       notifyListeners();
       debugPrint('Error deleting contact: $e');
     }
+  }
+
+  Future<void> _loadSearchHistory() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final history = prefs.getStringList('search_history');
+      debugPrint('Loaded history: $history');
+      if (history != null) {
+        _searchHistory.clear();
+        _searchHistory.addAll(history);
+        notifyListeners();
+      }
+    } catch (e) {
+      debugPrint('Error loading search history: $e');
+    }
+  }
+
+  Future<void> _saveSearchHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    debugPrint('Saving history: $_searchHistory');
+    await prefs.setStringList('search_history', _searchHistory);
   }
 }

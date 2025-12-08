@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
-import 'package:telefon_rehberi/model/contact.dart';
+import 'package:telefon_rehberi/features/contact/model/contact.dart';
 import 'contact_card.dart';
 
 class ContactListView extends StatelessWidget {

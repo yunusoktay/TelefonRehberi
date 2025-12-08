@@ -1,5 +1,5 @@
-import '../../model/contact.dart';
-import '../service/contacts_service.dart';
+import 'model/contact.dart';
+import 'service/contacts_service.dart';
 
 class ContactsRepository {
   final ContactsService _service;

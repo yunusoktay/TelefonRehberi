@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
-import 'add_contact_view_model.dart';
-import '../contacts/contacts_view_model.dart';
+import '../../viewmodel/add_contact_view_model.dart';
+import '../../viewmodel/contacts_view_model.dart';
 import 'widgets/photo_selector.dart';
 import 'widgets/add_contact_header.dart';
 import 'widgets/add_contact_form.dart';

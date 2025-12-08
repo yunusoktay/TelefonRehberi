@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
-import '../../core/constants/api_constants.dart';
-import '../../core/network/api_client.dart';
-import '../../model/contact.dart';
+import '../../../core/constants/api_constants.dart';
+import '../../../core/network/api_client.dart';
+import '../model/contact.dart';
 
 class ContactsService {
   final ApiClient _apiClient;

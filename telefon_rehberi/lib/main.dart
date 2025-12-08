@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/contacts/contacts_view_model.dart';
-import 'screens/contacts/contacts_page.dart';
+import 'features/contact/viewmodel/contacts_view_model.dart';
+import 'features/contact/view/contacts/contacts_page.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'dart:io';
 
