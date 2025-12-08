@@ -6,12 +6,14 @@ class AddContactHeader extends StatelessWidget {
   final VoidCallback onCancel;
   final VoidCallback onSave;
   final bool canSave;
+  final bool isLoading;
 
   const AddContactHeader({
     super.key,
     required this.onCancel,
     required this.onSave,
     required this.canSave,
+    this.isLoading = false,
   });
 
   @override
@@ -33,11 +35,13 @@ class AddContactHeader extends StatelessWidget {
           ),
           Text('New Contact', style: AppTextStyles.headline),
           GestureDetector(
-            onTap: canSave ? onSave : null,
+            onTap: (canSave && !isLoading) ? onSave : null,
             child: Text(
               'Done',
               style: AppTextStyles.bodyMedium.copyWith(
-                color: canSave ? AppColors.primary : AppColors.textSecondary,
+                color: (canSave && !isLoading)
+                    ? AppColors.primary
+                    : AppColors.textSecondary,
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
               ),

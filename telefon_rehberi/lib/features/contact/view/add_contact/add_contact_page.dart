@@ -71,6 +71,7 @@ class AddContactPage extends StatelessWidget {
                       AddContactHeader(
                         onCancel: () => Navigator.pop(context),
                         canSave: viewModel.canSave,
+                        isLoading: viewModel.isLoading,
                         onSave: () => handleSave(context, viewModel),
                       ),
                       Expanded(

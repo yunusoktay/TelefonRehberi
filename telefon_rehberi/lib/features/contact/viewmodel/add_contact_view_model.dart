@@ -15,6 +15,9 @@ class AddContactViewModel extends ChangeNotifier {
   String? get imagePath => _imagePath;
   String? get error => _error;
   String? _error;
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
 
   bool get canSave => _firstName.isNotEmpty && _phoneNumber.isNotEmpty;
 
@@ -43,8 +46,9 @@ class AddContactViewModel extends ChangeNotifier {
   }
 
   Future<bool> saveContact(ContactsViewModel contactsViewModel) async {
-    if (!canSave) return false;
+    if (!canSave || _isLoading) return false;
 
+    _isLoading = true;
     _error = null;
     notifyListeners();
 
@@ -66,8 +70,10 @@ class AddContactViewModel extends ChangeNotifier {
       return true;
     } catch (e) {
       _error = e.toString();
-      notifyListeners();
       return false;
+    } finally {
+      _isLoading = false;
+      notifyListeners();
     }
   }
 }
