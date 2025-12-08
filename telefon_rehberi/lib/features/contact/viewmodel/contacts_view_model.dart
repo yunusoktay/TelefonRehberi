@@ -62,12 +62,25 @@ class ContactsViewModel extends ChangeNotifier {
   }
 
   Future<void> _fetchContacts() async {
+    final localContacts = _repository.getLocalContacts();
+    if (localContacts.isNotEmpty) {
+      _contacts = localContacts;
+      notifyListeners();
+    }
+
     try {
-      _contacts = await _repository.getContacts();
+      final remoteContacts = await _repository.getContacts();
+      _contacts = remoteContacts;
       _error = null;
       notifyListeners();
+
+      await _repository.saveLocalContacts(remoteContacts);
     } catch (e) {
-      _error = e.toString();
+      if (_contacts.isEmpty) {
+        _error = e.toString();
+      } else {
+        debugPrint('Error loading API contacts (Offline mode): $e');
+      }
       debugPrint('Error loading API contacts: $e');
     }
   }

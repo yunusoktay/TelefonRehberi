@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'features/contact/model/contact.dart';
 import 'features/contact/viewmodel/contacts_view_model.dart';
 import 'features/contact/view/contacts/contacts_page.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'dart:io';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  Hive.registerAdapter(ContactAdapter());
+  await Hive.openBox<Contact>('contacts');
+
   HttpOverrides.global = MyHttpOverrides();
   runApp(const MyApp());
 }

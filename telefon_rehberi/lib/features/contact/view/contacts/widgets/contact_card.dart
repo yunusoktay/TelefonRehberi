@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -141,9 +142,9 @@ class ContactCard extends StatelessWidget {
 
   ImageProvider _getImageProvider(String path) {
     if (path.startsWith('http')) {
-      return NetworkImage(path);
+      return CachedNetworkImageProvider(path);
     } else if (!path.startsWith('/')) {
-      return NetworkImage('${ApiConstants.baseUrl}$path');
+      return CachedNetworkImageProvider('${ApiConstants.baseUrl}$path');
     } else {
       return FileImage(File(path));
     }

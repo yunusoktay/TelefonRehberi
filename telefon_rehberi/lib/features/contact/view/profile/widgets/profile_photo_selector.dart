@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:telefon_rehberi/core/theme/app_colors.dart';
 import 'package:telefon_rehberi/core/theme/app_text_styles.dart';
@@ -32,7 +33,8 @@ class ProfilePhotoSelector extends StatelessWidget {
                 image: imagePath != null
                     ? DecorationImage(
                         image: imagePath!.startsWith('http')
-                            ? NetworkImage(imagePath!) as ImageProvider
+                            ? CachedNetworkImageProvider(imagePath!)
+                                  as ImageProvider
                             : FileImage(File(imagePath!)),
                         fit: BoxFit.cover,
                       )

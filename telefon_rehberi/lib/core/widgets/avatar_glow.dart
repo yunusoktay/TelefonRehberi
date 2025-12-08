@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:palette_generator/palette_generator.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class AvatarGlow extends StatefulWidget {
   final String? imagePath;
@@ -54,7 +55,7 @@ class _AvatarGlowState extends State<AvatarGlow> {
     try {
       ImageProvider imageProvider;
       if (widget.imagePath!.startsWith('http')) {
-        imageProvider = NetworkImage(widget.imagePath!);
+        imageProvider = CachedNetworkImageProvider(widget.imagePath!);
       } else {
         imageProvider = FileImage(File(widget.imagePath!));
       }
